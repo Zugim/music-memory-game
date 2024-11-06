@@ -19,9 +19,7 @@ const generateGuessList = () => {
     guess.dataset.id = i;
     guess.addEventListener("click", (el) => {
       el.stopPropagation();
-      if (currSelectedGuess !== null) {
-        clearSelectedGuess();
-      }
+      clearSelectedGuess();
       el.target.classList.add("selected");
       instruments.forEach((instrument) =>
         instrument.classList.add("highlighted")
@@ -38,8 +36,12 @@ const getSelectedGuess = () =>
     (guess) => guess.dataset.id === currSelectedGuess
   )[0];
 
-const clearSelectedGuess = () =>
-  getSelectedGuess().classList.remove("selected");
+const clearSelectedGuess = () => {
+  if (currSelectedGuess !== null) {
+    getSelectedGuess().classList.remove("selected");
+    currSelectedGuess = null;
+  }
+};
 
 const clearHighlightedInstruments = () =>
   instruments.forEach((instrument) =>
