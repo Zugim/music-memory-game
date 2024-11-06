@@ -8,11 +8,6 @@ let currLevel = 0;
 let currSelectedGuess = null;
 
 //utility functions (start)
-const getSelectedGuess = () =>
-  [...document.querySelectorAll(".guess")].filter(
-    (guess) => guess.dataset.id === currSelectedGuess
-  )[0];
-
 const clearSelectedGuess = () =>
   getSelectedGuess().classList.remove("selected");
 
@@ -20,6 +15,11 @@ const clearHighlightedInstruments = () =>
   instruments.forEach((instrument) =>
     instrument.classList.remove("highlighted")
   );
+
+const getSelectedGuess = () =>
+  [...document.querySelectorAll(".guess")].filter(
+    (guess) => guess.dataset.id === currSelectedGuess
+  )[0];
 //utility functions (end)
 
 //clear all selected and highlighted elements when main is clicked
