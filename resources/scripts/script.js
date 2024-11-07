@@ -20,11 +20,11 @@ const generateGuessList = () => {
     guess.addEventListener("click", (el) => {
       el.stopPropagation();
       clearSelectedGuess();
-      el.target.classList.add("selected");
+      el.target.closest("li").classList.add("selected");
       instruments.forEach((instrument) =>
         instrument.classList.add("highlighted")
       );
-      currSelectedGuess = el.target.dataset.id;
+      currSelectedGuess = el.target.closest("li").dataset.id;
     });
     guessesList.appendChild(guess);
   }
@@ -88,12 +88,7 @@ playButton.addEventListener("click", (el) => {
 
 submitButton.addEventListener("click", (el) => {
   el.stopPropagation();
-
-  if (
-    [...document.querySelectorAll(".guess")].filter(
-      (guess) => guess.textContent === ""
-    ).length === 0
-  ) {
+  if ([...document.querySelectorAll(".guess img")].length === currLevel + 3) {
     console.log("Checking answer...");
     toggleHiddenButton();
   } else {
