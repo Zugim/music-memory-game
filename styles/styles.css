@@ -23,7 +23,8 @@ ul {
 li {
   display: grid;
   place-content: center;
-  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
   aspect-ratio: 1;
   padding: 0.3rem;
   background-color: white;
