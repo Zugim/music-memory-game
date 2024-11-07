@@ -69,9 +69,11 @@ for (let i = 0; i < instruments.length; i++) {
   instruments[i].addEventListener("click", (el) => {
     el.stopPropagation();
     if (currSelectedGuess === null) {
-      console.log(`Playing the: ${el.target.dataset.instrument}`);
+      console.log(`Playing the: ${el.target.closest("li").dataset.instrument}`);
     } else {
-      getSelectedGuess().textContent = el.target.dataset.instrument;
+      getSelectedGuess().innerHTML = `<img src="resources/images/${
+        el.target.closest("li").dataset.instrument
+      }.png" alt="${el.target.closest("li").dataset.description} icon" />`;
       clearSelectedGuess();
       clearHighlightedInstruments();
     }
