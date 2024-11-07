@@ -31,6 +31,10 @@ li {
   cursor: pointer;
 }
 
+img {
+  max-width: 100%;
+}
+
 .guess.selected {
   background-color: red;
 }
