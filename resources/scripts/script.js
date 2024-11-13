@@ -125,8 +125,9 @@ playButton.addEventListener("click", (el) => {
   let soundDelay = 0;
 
   for (let i = 0; i < answer.length; i++) {
-    setTimeout(() => sounds[i].play(), soundDelay);
-    soundDelay += sounds[i].duration * 1000;
+    console.log(soundDelay);
+    setTimeout(() => sounds[answer[i]].play(), soundDelay);
+    soundDelay += sounds[answer[i]].duration * 1000 + 100;
   }
 
   toggleHiddenButton(playButton, submitButton);
