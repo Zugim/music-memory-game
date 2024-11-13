@@ -122,12 +122,11 @@ for (let i = 0; i < instruments.length; i++) {
 
 playButton.addEventListener("click", (el) => {
   el.stopPropagation();
+  let soundDelay = 0;
+
   for (let i = 0; i < answer.length; i++) {
-    if (i === 0) {
-      sounds[i].play();
-    } else {
-      setTimeout(sounds[i].play(), 8000);
-    }
+    setTimeout(() => sounds[i].play(), soundDelay);
+    soundDelay += sounds[i].duration * 1000;
   }
 
   toggleHiddenButton(playButton, submitButton);
