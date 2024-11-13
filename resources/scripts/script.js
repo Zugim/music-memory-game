@@ -1,7 +1,8 @@
 const main = document.querySelector("main");
 const instruments = document.querySelectorAll(".instrument");
-const submitButton = document.querySelector(".submit");
 const playButton = document.querySelector(".play");
+const submitButton = document.querySelector(".submit");
+const levelUpButton = document.querySelector(".level-up");
 const guessesList = document.getElementById("guesses");
 const message = document.querySelector(".message");
 
@@ -58,9 +59,9 @@ const clearHighlightedInstruments = () =>
     instrument.classList.remove("highlighted")
   );
 
-const toggleHiddenButton = () => {
-  submitButton.classList.toggle("hidden");
-  playButton.classList.toggle("hidden");
+const toggleHiddenButton = (toHide, toShow) => {
+  toHide.classList.add("hidden");
+  toShow.classList.remove("hidden");
 };
 
 const generateAnswer = () => {
@@ -83,7 +84,7 @@ const checkAnswer = () => {
   if (correctCount === currLevel + 3) {
     message.textContent = "Nice job! That's correct 🎉";
     answer = [];
-    toggleHiddenButton();
+    toggleHiddenButton(submitButton, levelUpButton);
   } else {
     message.textContent = "Sorry. That's incorrect 😢";
   }
@@ -121,10 +122,23 @@ for (let i = 0; i < instruments.length; i++) {
 
 playButton.addEventListener("click", (el) => {
   el.stopPropagation();
+  for (let i = 0; i < answer.length; i++) {
+    if (i === 0) {
+      sounds[i].play();
+    } else {
+      setTimeout(sounds[i].play(), 8000);
+    }
+  }
+
+  toggleHiddenButton(playButton, submitButton);
+});
+
+levelUpButton.addEventListener("click", (el) => {
+  el.stopPropagation();
   generateGuessList();
   generateAnswer();
   message.textContent = "Please input your guess.";
-  toggleHiddenButton();
+  toggleHiddenButton(levelUpButton, playButton);
 });
 
 submitButton.addEventListener("click", (el) => {
