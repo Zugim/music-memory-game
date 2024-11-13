@@ -3,9 +3,19 @@ const instruments = document.querySelectorAll(".instrument");
 const submitButton = document.querySelector(".submit");
 const playButton = document.querySelector(".play");
 const guessesList = document.getElementById("guesses");
+const message = document.querySelector(".message");
 
+const sounds = [
+  new Audio("/resources/sounds/guitar.mp3"),
+  new Audio("/resources/sounds/drum.mp3"),
+  new Audio("/resources/sounds/piano.mp3"),
+  new Audio("/resources/sounds/saxophone.mp3"),
+  new Audio("/resources/sounds/violin.mp3"),
+  new Audio("/resources/sounds/recorder.mp3"),
+];
 let currLevel = 0;
 let currSelectedGuess = null;
+let answer = [];
 
 //utility functions (start)
 const generateGuessList = () => {
@@ -52,9 +62,36 @@ const toggleHiddenButton = () => {
   submitButton.classList.toggle("hidden");
   playButton.classList.toggle("hidden");
 };
+
+const generateAnswer = () => {
+  for (let i = 0; i < currLevel + 3; i++) {
+    answer.push(Math.floor(Math.random() * instruments.length));
+  }
+  console.log(answer);
+};
+
+const checkAnswer = () => {
+  const guesses = document.querySelectorAll(".guess");
+  let correctCount = 0;
+
+  guesses.forEach((guess, index) => {
+    if (Number(guess.dataset.instrumentId) === answer[index]) {
+      correctCount += 1;
+    }
+  });
+
+  if (correctCount === currLevel + 3) {
+    message.textContent = "Nice job! That's correct 🎉";
+    answer = [];
+    toggleHiddenButton();
+  } else {
+    message.textContent = "Sorry. That's incorrect 😢";
+  }
+};
 //utility functions (end)
 
 generateGuessList();
+generateAnswer();
 
 //clear all selected and highlighted elements when main is clicked
 main.addEventListener("click", (el) => {
@@ -69,11 +106,13 @@ for (let i = 0; i < instruments.length; i++) {
   instruments[i].addEventListener("click", (el) => {
     el.stopPropagation();
     if (currSelectedGuess === null) {
-      console.log(`Playing the: ${el.target.closest("li").dataset.instrument}`);
+      sounds[i].play();
     } else {
       getSelectedGuess().innerHTML = `<img src="resources/images/${
         el.target.closest("li").dataset.instrument
       }.png" alt="${el.target.closest("li").dataset.description} icon" />`;
+      getSelectedGuess().dataset.instrumentId =
+        el.target.closest("li").dataset.id;
       clearSelectedGuess();
       clearHighlightedInstruments();
     }
@@ -83,15 +122,16 @@ for (let i = 0; i < instruments.length; i++) {
 playButton.addEventListener("click", (el) => {
   el.stopPropagation();
   generateGuessList();
+  generateAnswer();
+  message.textContent = "Please input your guess.";
   toggleHiddenButton();
 });
 
 submitButton.addEventListener("click", (el) => {
   el.stopPropagation();
   if ([...document.querySelectorAll(".guess img")].length === currLevel + 3) {
-    console.log("Checking answer...");
-    toggleHiddenButton();
+    checkAnswer();
   } else {
-    console.log("Please complete your guess");
+    message.textContent = "Please complete your guess.";
   }
 });
